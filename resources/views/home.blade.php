@@ -37,7 +37,7 @@
         }
 
         .title {
-            font-size: 84px;
+            font-size: 6vw;
         }
 
         .links > a {
@@ -60,6 +60,12 @@
 
         button > .icon {
           fill: #dedede;
+        }
+
+        @media screen and (max-width: 600px) {
+          .title {
+            font-size: 8vw;
+          }
         }
     </style>
 @endpush
