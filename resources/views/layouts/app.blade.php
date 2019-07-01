@@ -10,6 +10,7 @@
     <title>{{ config('app.name', 'GRWFaucet') }}</title>
 
     <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="{{ asset('js/app.js') }}" defer></script>
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 
@@ -81,5 +82,6 @@
             @yield('content')
         </main>
     </div>
+    @stack('inline-script')
 </body>
 </html>

@@ -57,7 +57,51 @@
         .g-recaptcha {
             /* display: inline-block; */
         }
+
+        button > .icon {
+          fill: #dedede;
+        }
     </style>
+@endpush
+
+@push('inline-script')
+<script type="text/javascript">
+  function copyToClipboard(text, el) {
+    var copyTest = document.queryCommandSupported('copy');
+    var elOriginalText = el.attr('data-original-title');
+
+    if (copyTest === true) {
+      var copyTextArea = document.createElement("textarea");
+      copyTextArea.value = text;
+      document.body.appendChild(copyTextArea);
+      copyTextArea.select();
+      try {
+        var successful = document.execCommand('copy');
+        var msg = successful ? 'Copied!' : 'Whoops, not copied!';
+        el.attr('data-original-title', msg).tooltip('show');
+      } catch (err) {
+        console.log('Oops, unable to copy');
+      }
+      document.body.removeChild(copyTextArea);
+      el.attr('data-original-title', elOriginalText);
+    } else {
+      // Fallback if browser doesn't support .execCommand('copy')
+      window.prompt("Copy to clipboard: Ctrl+C or Command+C, Enter", text);
+    }
+  }
+
+  $(document).ready(function() {
+    // Enable Tooltips
+    $('[data-toggle="tooltip"]').tooltip();
+
+    // Copy to clipboard the data-copy attribute and pass it to our copy function
+    $('.js-copy').click(function() {
+      var text = $(this).attr('data-copy');
+      var el = $(this);
+      copyToClipboard(text, el);
+    });
+  });
+</script>
 @endpush
 
 @section('content')
@@ -72,8 +116,15 @@
                 @endif
             </div>
             <div class="col-md-8">
-                <div class="mb-5">
-                    Send some {{ config('faucet.ticker') }} here: <span class="font-weight-bold">{{ config('faucet.faucetAddress') }}</span> to keep this faucet running.
+                <div class="row mb-5">
+                    <div class="col-12">
+                        Send some {{ config('faucet.ticker') }} here: <div class="btn-group">
+                          <span id="faucet-address" data-toggle="tooltip" data-copy="{{ config('faucet.faucetAddress') }}" class="btn btn-outline-info js-copy" data-placement="bottom" title="Copy to clipboard">{{ config('faucet.faucetAddress') }}</span>
+                          <button type="button" class="btn btn-dark btn-copy js-copy" data-toggle="tooltip" data-placement="bottom" data-copy="{{ config('faucet.faucetAddress') }}" title="Copy to clipboard">
+                            <svg class="icon" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="24" height="24" viewBox="0 0 24 24"><path d="M17,9H7V7H17M17,13H7V11H17M14,17H7V15H14M12,3A1,1 0 0,1 13,4A1,1 0 0,1 12,5A1,1 0 0,1 11,4A1,1 0 0,1 12,3M19,3H14.82C14.4,1.84 13.3,1 12,1C10.7,1 9.6,1.84 9.18,3H5A2,2 0 0,0 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5A2,2 0 0,0 19,3Z" /></svg>
+                          </button>
+                        </div> to keep this faucet running.
+                    </div>
                 </div>
                 @if (session()->has('success'))
                     <div class="alert alert-success">
