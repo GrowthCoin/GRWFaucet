@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Address;
 use App\FaucetConfig;
 use Illuminate\Http\Request;
 
@@ -24,6 +25,7 @@ class HomeController extends Controller
      */
     public function index()
     {
+        $payouts = Address::all()->sum('amount');
         try
         {
             $balance = bitcoind()->getBalance()->get();
@@ -31,6 +33,6 @@ class HomeController extends Controller
         {
             $balance = null;
         }
-        return view('home', [ 'faucetBalance' => $balance ] );
+        return view('home', [ 'faucetBalance' => $balance, 'payouts' => $payouts ] );
     }
 }
