@@ -62,14 +62,20 @@ class AddressController extends Controller
         // Execute
         try
         {
-            if(is_null( bitcoind()->sendtoaddress( $request->grwaddress, $amount )['error'] ))
+            $response = bitcoind()->sendtoaddress( $request->grwaddress, $amount );
+
+            if(! is_null( $response->get() ))
             {
                 $address->count += 1;
                 $address->amount += $amount;
                 $address->ip = $request->ip();
                 $address->save();
 
-                return back()->with('success', 'Sent '.$amount.' ' . config('faucet.ticker') . ' to <strong>'. $request->grwaddress .'</strong>' );
+                $message = 'Sent '.$amount.' ' . config('faucet.ticker') . ' to <strong>'. $request->grwaddress .'</strong>';
+                if( !empty( config('faucet.explorerUrlTx') ) )
+                    $message .= ' | Track on the <a href="'. config('faucet.explorerUrlTx').$response->get() .'">explorer</a>.';
+
+                return back()->with('success', $message );
             }
 
         } catch( \Exception $e )
