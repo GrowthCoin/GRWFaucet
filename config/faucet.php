@@ -2,7 +2,8 @@
 return [
     'ticker' => env( 'COIN_TICKER',  'GRW' ),
     'coinName' => env( 'COIN_NAME', 'Growthcoin' ),
-    'explorerUrlTx' => env( 'EXPLORER_URL_TX', ''),
+    'explorerUrl' => env( 'EXPLORER_URL', ''),
+    'explorerUrlTxApi' => env( 'EXPLORER_URL_TX_API', ''),
     'faucetAddress' => env( 'FAUCET_ADDRESS', ''),
     'minReward' => env( 'MIN_REWARD', 1000000 ), // in smallest denomination (satoshis)
     'maxReward' => env( 'MAX_REWARD', 11000000), // in smallest denomination (satoshis)

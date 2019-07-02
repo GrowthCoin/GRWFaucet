@@ -72,8 +72,8 @@ class AddressController extends Controller
                 $address->save();
 
                 $message = 'Sent '.$amount.' ' . config('faucet.ticker') . ' to <strong>'. $request->grwaddress .'</strong>';
-                if( !empty( config('faucet.explorerUrlTx') ) )
-                    $message .= ' | Track on the <a href="'. config('faucet.explorerUrlTx').$response->get() .'">explorer</a>.';
+                if( !empty( config('faucet.explorerUrlTxApi') ) )
+                    $message .= ' | Track on the <a href="'. config('faucet.explorerUrlTxApi').$response->get() .'">explorer</a>.';
 
                 return back()->with('success', $message );
             }

@@ -47,7 +47,7 @@
                             <a class="nav-link" href="https://growthco.in">Homepage</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="https://explorer.growthco.in">Explorer</a>
+                            <a class="nav-link" href="{{ config('faucet.explorerUrl') }}">Explorer</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="https://discord.gg/pgfC2Xr">Join us on Discord!</a>
@@ -124,7 +124,7 @@
                 <a href="https://growthco.in">Growthcoin's homepage</a>
               </li>
               <li>
-                <a href="https://explorer.growthco.in">Growthcoin's explorer</a>
+                <a href="{{ config('faucet.explorerUrl') }}">Growthcoin's explorer</a>
               </li>
             </ul>
 
@@ -154,7 +154,7 @@
 
       <div class="footer-copyright text-center py-4  ml-1 mr-1">
           <p>
-              © Copyright 2019 - GRWFaucet | <a href="https://growthco.in/">Growthcoin</a> since 2013
+              © Copyright 2019 - {{ config('app.name', 'GRWFaucet') }} | <a href="https://growthco.in/">Growthcoin</a> since 2013
           </p>
       </div>
     </footer>
