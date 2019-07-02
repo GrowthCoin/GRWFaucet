@@ -55,6 +55,27 @@ class AddressController extends Controller
         $amount = (rand(config('faucet.minReward'), config('faucet.maxReward'))) / pow(10, config('faucet.coinDecimals'));
 
 
+        // Last 10 minutes
+        $askCount10 = Address::where('updated_at', '>=', now()->subSeconds(600) )->count();
+        // Last 30 minutes
+        $askCount30 = Address::where('updated_at', '>=', now()->subSeconds(1800) )->count();
+        // Last 60 minutes
+        $askCount60 = Address::where('updated_at', '>=', now()->subSeconds(3600) )->count();
+
+        // Check for sustained ask. Reduce payout if so.
+        if( ($askCount10/10) >= 0.8)
+        {
+            $amount *= 0.5;
+        }
+        if( ($askCount30/30) >= 0.8)
+        {
+            $amount *= 0.10;
+        }
+        if( ($askCount60/60) >= 0.8)
+        {
+            $amount *= 0.05;
+        }
+
         // Retrieve model
         $address = Address::FirstOrNew(['address' => $request->grwaddress]);
 
