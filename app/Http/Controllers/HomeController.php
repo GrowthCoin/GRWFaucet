@@ -26,13 +26,25 @@ class HomeController extends Controller
     public function index()
     {
         $payouts = Address::all()->sum('amount');
+        $payoutsCount = Address::all()->count();
+
         try
         {
             $balance = bitcoind()->getBalance()->get();
+            $connections = bitcoind()->getConnectioncount()->get();
+            $blocks = bitcoind()->getBlockcount()->get();
         } catch( \Exception $e )
         {
             $balance = null;
+            $connections = null;
+            $blocks = null;
         }
-        return view('home', [ 'faucetBalance' => $balance, 'payouts' => $payouts ] );
+        return view('home', [
+            'faucetBalance' => $balance,
+            'payouts' => $payouts,
+            'payoutCount' => $payoutsCount,
+            'connections' => $connections,
+            'blocks' => $blocks,
+        ]);
     }
 }

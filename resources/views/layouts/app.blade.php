@@ -43,6 +43,15 @@
 
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="https://growthco.in">Homepage</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="https://explorer.growthco.in">Explorer</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="https://discord.gg/pgfC2Xr">Join us on Discord!</a>
+                        </li>
                         <!-- Authentication Links -->
                         {{-- @guest
                             <li class="nav-item">
@@ -82,6 +91,73 @@
             @yield('content')
         </main>
     </div>
+    <footer class="page-footer font-small mt-5 pt-4">
+
+      <div class="container text-center text-md-left">
+        <div class="row">
+          <div class="col-md-6 mt-md-0 mt-3">
+            <h5 class="text-uppercase">{{ config('app.name') }} </h5>
+            <p>This faucet is operated by the Growthcoin devs.</p>
+            <h6 class="text-uppercase">Stats</h6>
+            <ul class="list-unstyled">
+                <li>
+                    Lifetime payouts: {{ $payouts }} {{ config('faucet.ticker') }}
+                </li>
+                <li>
+                    Claiming addresses: {{ $payoutCount }}
+                </li>
+                <li>
+                    Network connections: <?= is_null( $connections ) ? "Not connected" : $connections ?>
+                </li>
+                <li>
+                    Block height: <?= is_null( $blocks ) ? "Not connected" : $blocks ?>
+                </li>
+            </ul>
+          </div>
+
+          <hr class="clearfix w-100 d-md-none pb-3">
+
+          <div class="col-md-3 mb-md-0 mb-3">
+            <h5 class="text-uppercase">Navigation</h5>
+            <ul class="list-unstyled">
+              <li>
+                <a href="https://growthco.in">Growthcoin's homepage</a>
+              </li>
+              <li>
+                <a href="https://explorer.growthco.in">Growthcoin's explorer</a>
+              </li>
+            </ul>
+
+          </div>
+
+          <div class="col-md-3 mb-md-0 mb-3">
+
+            <h5 class="text-uppercase">Social</h5>
+            <ul class="list-unstyled">
+              <li>
+                <a href="https://twitter.com/GRWcoin">Twitter</a>
+              </li>
+              <li>
+                <a href="https://discord.gg/pgfC2Xr">Discord</a>
+              </li>
+              <li>
+                <a href="https://bitcointalk.org/index.php?topic=641241">Bitcointalk</a>
+              </li>
+              <li>
+                <a href="https://github.com/GrowthCoin">Github</a>
+              </li>
+            </ul>
+
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-copyright text-center py-4  ml-1 mr-1">
+          <p>
+              © Copyright 2019 - GRWFaucet | <a href="https://growthco.in/">Growthcoin</a> since 2013
+          </p>
+      </div>
+    </footer>
     @stack('inline-script')
 </body>
 </html>
