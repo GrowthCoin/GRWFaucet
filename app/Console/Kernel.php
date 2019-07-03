@@ -24,8 +24,12 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')
-        //          ->hourly();
+        $schedule->command('scrape:torlist')
+                 ->everyThirtyMinutes()
+                 ->when(function(){
+                     sleep( 3 * 60 ); // Sleep extra 3 minutes to make sure we respect policy on https://www.dan.me.uk/tornodes
+                     return true;
+                 });
     }
 
     /**
