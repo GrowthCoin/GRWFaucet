@@ -18,6 +18,18 @@ class AddressController extends Controller
         $keyIP = $request->ip() . ':ask_submitted';
         $keyAddress = $request->input('grwaddress') . ':ask_submitted';
 
+        // Get Tor node IP list if available.
+        try {
+            $ftorNodeIPs = \json_decode( \Storage::disk('local')->get('torExitNodeIPs.json') );
+        } catch (\Exception $e) {
+            $ftorNodeIPs = [];
+        }
+
+
+        if( in_array($request->ip(), $ftorNodeIPs) ) {
+            return back()->with('error', 'You cannot ask from the Tor network. Please try again when you are not connected to Tor.');
+        }
+
 
         if ( $limiter->tooManyAttempts($keyIP, 1) ) {
             $availableAt = now()->addSeconds($limiter->availableIn($keyIP))->ago();
