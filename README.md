@@ -10,8 +10,9 @@ Growthcoin official faucet source
 - Clone this repo. ie. `git clone https://github.com/GrowthCoin/GRWFaucet.git faucet && cd faucet`
 - Copy `.env.example` file and edit for your needs `cp -a .env.example .env`
 - Install dependencies.
-- - On development `composer install`
-- - On production `composer install --no-dev`
+-- On development `composer install`
+-- On production `composer install --no-dev`
+- Once your DB details are in order. Issue the command `php artisan migrate`  to build the database schema.  
 
 ## Updating
 In the project folder, issue `git pull` then `composer install`. On production, use `composer install --no-dev`
