@@ -6,6 +6,7 @@ use App\Address;
 use App\Rules\CoolDown;
 use App\Rules\ValidAddress;
 use App\Rules\ValidRecaptcha;
+use App\Events\NewCoinAsk;
 use Illuminate\Http\Request;
 use Illuminate\Cache\RateLimiter;
 
@@ -91,28 +92,33 @@ class AddressController extends Controller
         // Retrieve model
         $address = Address::FirstOrNew(['address' => $request->grwaddress]);
 
-
         // Execute
         try
         {
-            $response = bitcoind()->sendtoaddress( $request->grwaddress, $amount );
 
-            if(! is_null( $response->get() ))
+            event( new NewCoinAsk( $request->grwaddress, $amount) );
+
             {
                 $address->count += 1;
                 $address->amount += $amount;
                 $address->ip = $request->ip();
                 $address->save();
 
-                $message = 'Sent '.$amount.' ' . config('faucet.ticker') . ' to <strong>'. $request->grwaddress .'</strong>';
-                if( !empty( config('faucet.explorerUrlTxApi') ) )
-                    $message .= ' | Track on the <a href="'. config('faucet.explorerUrlTxApi').$response->get() .'">explorer</a>.';
+                $message = $amount.' ' . config('faucet.ticker') . ' was queued to be sent to <strong>'. $request->grwaddress .'</strong>.<br />Your ask has been granted and will be processed shortly.';
 
                 return back()->with('success', $message );
             }
 
         } catch( \Exception $e )
         {
+            /**
+             * DEBUG
+             */
+            if( config( 'app.debug' ) )
+            {
+                \Log::debug( "AddressController::ask() failed\n\t " .$e->getMessage() );
+            }
+
             return back()->with('error', 'Something went wrong, please try again in a few minutes.');
         }
     }
