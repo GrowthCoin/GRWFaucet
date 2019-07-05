@@ -5,6 +5,7 @@ return [
     'explorerUrl' => env( 'EXPLORER_URL', ''),
     'explorerUrlTxApi' => env( 'EXPLORER_URL_TX_API', ''),
     'faucetAddress' => env( 'FAUCET_ADDRESS', ''),
+    'sendAccount' => env( 'FAUCET_SEND_ACCOUNT', '' ),
     'minReward' => env( 'MIN_REWARD', 1000000 ), // in smallest denomination (satoshis)
     'maxReward' => env( 'MAX_REWARD', 11000000), // in smallest denomination (satoshis)
     'coinDecimals' => env( 'COIN_DECIMALS', 6 ),
