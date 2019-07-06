@@ -30,8 +30,29 @@ class ProcessPendingAsks implements ShouldQueue
      */
     public function handle()
     {
+        /**
+         * DEBUG
+         */
+        if( config( 'app.debug' ) )
+        {
+            \Log::debug( "ProcessPendingAsks: process started" );
+        }
         $processStart = now();
         $pendingAsks = PendingAsk::where( 'updated_at', '<=', $processStart )->get();
+
+        if( ! $pendingAsks->count() )
+        {
+            /**
+             * DEBUG
+             */
+            if( config( 'app.debug' ) )
+            {
+                \Log::debug( "ProcessPendingAsks job processed but nothing to do. Quitting." );
+            }
+
+            // Exit silently
+            return;
+        }
 
         try
         {
@@ -50,7 +71,7 @@ class ProcessPendingAsks implements ShouldQueue
                  */
                 if( config( 'app.debug' ) )
                 {
-                    \Log::debug( "ProcessCoinAsk job completed. Sent to these addresses:\n\t " .print_r($sendTo, true));
+                    \Log::debug( "ProcessPendingAsks job completed. Sent to these addresses:\n\t " .print_r($sendTo, true));
                 }
             }
 
@@ -61,7 +82,7 @@ class ProcessPendingAsks implements ShouldQueue
              */
             if( config( 'app.debug' ) )
             {
-                \Log::debug( "ProcessCoinAsk job processed but something whent wrong:\n\t" .$e->getMessage() ."\n\t" . "Addresses sending to:\n\t" . print_r($sendTo, true ));
+                \Log::debug( "ProcessPendingAsks job processed but something whent wrong:\n\t" .$e->getMessage() ."\n\t" . "Addresses sending to:\n\t" . print_r($sendTo, true ));
             }
         }
 
