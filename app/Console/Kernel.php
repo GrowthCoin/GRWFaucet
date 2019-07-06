@@ -30,6 +30,8 @@ class Kernel extends ConsoleKernel
                      sleep( 3 * 60 ); // Sleep extra 3 minutes to make sure we respect policy on https://www.dan.me.uk/tornodes
                      return true;
                  });
+
+        $schedule->job(new \App\Jobs\ProcessPendingAsks)->everyFiveMinutes();
     }
 
     /**
