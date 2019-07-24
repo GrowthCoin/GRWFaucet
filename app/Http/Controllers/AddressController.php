@@ -67,6 +67,20 @@ class AddressController extends Controller
         // Select random amount to send
         $amount = (rand(config('faucet.minReward'), config('faucet.maxReward'))) / pow(10, config('faucet.coinDecimals'));
 
+        // Check if amount is bigger than minimum balance or wallet balance
+        $minBalance = config('faucet.minBalance') / pow(10, config('faucet.coinDecimals'));
+        try
+        {
+            $balance = bitcoind()->getBalance()->get();
+        } catch( \Exception $e )
+        {
+            $balance = 0;
+        }
+        if( $amount + $minBalance >= $balance )
+        {
+            return back()->with('error', 'Oh, this is embarassing! We don\'t have enough funds to complete your request.<br />Please come back later or let us know on <a href="'.config('faucet.discordUrl').'">Discord</a>');
+        }
+
 
         // Last 10 minutes
         $askCount10 = Address::where('updated_at', '>=', now()->subSeconds(600) )->count();

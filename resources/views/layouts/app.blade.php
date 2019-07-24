@@ -50,7 +50,7 @@
                             <a class="nav-link" href="{{ config('faucet.explorerUrl') }}">Explorer</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="https://discord.gg/pgfC2Xr">Join us on Discord!</a>
+                            <a class="nav-link" href="{{ config('faucet.discordUrl') }}">Join us on Discord!</a>
                         </li>
                         <!-- Authentication Links -->
                         {{-- @guest
