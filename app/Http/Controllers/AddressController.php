@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Address;
+use App\PendingAsk;
 use App\Rules\CoolDown;
 use App\Rules\ValidAddress;
 use App\Rules\ValidRecaptcha;
@@ -69,6 +70,7 @@ class AddressController extends Controller
 
         // Check if amount is bigger than minimum balance or wallet balance
         $minBalance = config('faucet.minBalance') / pow(10, config('faucet.coinDecimals'));
+        $pendingAksAmount = PendingAsk::all()->sum('amount');
         try
         {
             $balance = bitcoind()->getBalance()->get();
@@ -76,7 +78,7 @@ class AddressController extends Controller
         {
             $balance = 0;
         }
-        if( $amount + $minBalance >= $balance )
+        if( $amount + $pendingAksAmount + $minBalance >= $balance )
         {
             return back()->with('error', 'Oh, this is embarassing! We don\'t have enough funds to complete your request.<br />Please come back later or let us know on <a href="'.config('faucet.discordUrl').'">Discord</a>');
         }
